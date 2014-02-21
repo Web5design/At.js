@@ -17,10 +17,10 @@ module.exports = (grunt) ->
       specs:
         files:[
           {
-            expand: true, cwd: 'spec/coffeescripts', ext: ".spec.js",
-            src: '*.spec.coffee', dest: 'spec/javascripts',
+            expand: true, cwd: 'spec/javascripts', ext: ".spec.js",
+            src: '*.spec.coffee', dest: 'spec/build/javascripts',
           },
-          src: 'spec/spec_helper.coffee', dest: 'spec/spec_helper.js'
+          src: 'spec/spec_helper.coffee', dest: 'spec/build/spec_helper.js'
         ]
 
     uglify:
@@ -29,12 +29,12 @@ module.exports = (grunt) ->
 
     watch:
       coffee:
-        files: ['src/*.coffee', 'spec/coffeescripts/*.spec.coffee', 'spec/spec_helper.coffee']
+        files: ['src/*.coffee', 'spec/javascripts/*.spec.coffee', 'spec/spec_helper.coffee']
         tasks: ['coffee', 'uglify', 'notify']
       test:
         options:
           debounceDelay: 250
-        files: ['spec/coffeescripts/*.spec.coffee', 'spec/spec_helper.coffee']
+        files: ['spec/javascripts/*.spec.coffee', 'spec/spec_helper.coffee']
         tasks: ['test', 'notify']
 
     jasmine:
@@ -42,15 +42,15 @@ module.exports = (grunt) ->
         src: 'dist/js/<%= pkg.name %>.js',
         options:
           keepRunner: true
-          styles: 'src/<%= pkg.name %>.css',
-          specs: 'spec/javascripts/*.spec.js',
+          styles: 'dist/css/<%= pkg.name %>.css',
+          specs: 'spec/build/javascripts/*.spec.js',
           vendor: [
             'bower_components/jquery/jquery.min.js',
             'bower_components/Caret.js/src/*.js'
           ],
           helpers: [
             'bower_components/jasmine-jquery/lib/jasmine-jquery.js',
-            'spec/spec_helper.js',
+            'spec/build/spec_helper.js',
             'spec/helpers/*.js'
           ]
 
