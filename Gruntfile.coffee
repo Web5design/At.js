@@ -5,18 +5,19 @@ module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON 'package.json'
     meta:
-      banner: "/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - " +
-        "<%= grunt.template.today(\"yyyy-mm-dd\") %>\n" +
-        "<%= pkg.homepage ? \"* \" + pkg.homepage + \"\n\" : \"\" %>" +
-        "* Copyright (c) <%= grunt.template.today(\"yyyy\") %> <%= pkg.author.name %>;" +
-        " Licensed <%= _.pluck(pkg.licenses, \"type\").join(\", \") %> */"
+      banner:
+        "/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today(\"yyyy-mm-dd\") %>\n" +
+        "* Copyright (c) <%= grunt.template.today(\"yyyy\") %> <%= pkg.author.name %> <<%=pkg.author.email%>>; \n" +
+        "* homepage: <%= pkg.homepage %> \n" +
+        "* Licensed <%= pkg.license %>\n" +
+        "*/\n\n"
 
     coffee:
       dist:
         options:
           bare: true, join: true
         files:
-          'dist/js/<%= pkg.name %>.js': [
+          'src/build/<%= pkg.name %>.js': [
             'src/app.coffee',
             'src/controller.coffee',
             'src/model.coffee',
@@ -91,6 +92,15 @@ module.exports = (grunt) ->
     copy:
       css: {src: 'src/jquery.atwho.css', dest: 'dist/css/jquery.atwho.css'}
 
+    concat:
+      options:
+        # banner: "<%= meta.banner %>"
+        process: (src) ->
+          grunt.template.process("<%= meta.banner %>") + src
+      dist:
+        src: 'src/build/<%= pkg.name %>.js',
+        dest: 'dist/js/<%= pkg.name %>.js'
+
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
@@ -100,6 +110,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-json-replace'
   grunt.loadNpmTasks 'grunt-notify'
   grunt.loadNpmTasks 'grunt-contrib-copy'
+  grunt.loadNpmTasks 'grunt-contrib-concat'
 
   # alias
   grunt.registerTask 'update-version', 'json-replace'

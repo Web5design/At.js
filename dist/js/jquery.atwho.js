@@ -1,3 +1,9 @@
+/*! jquery.atwho - v0.4.6 - 2014-02-21
+* Copyright (c) 2014 chord.luo <chord.luo@gmail.com>; 
+* homepage: http://ichord.github.com/At.js 
+* Licensed MIT
+*/
+
 var $CONTAINER, Api, App, Atwho, Controller, DEFAULT_CALLBACKS, KEY_CODE, Model, View,
   __slice = [].slice;
 
