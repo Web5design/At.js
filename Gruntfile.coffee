@@ -13,7 +13,17 @@ module.exports = (grunt) ->
 
     coffee:
       dist:
-        src: 'src/<%= pkg.name %>.coffee', dest: 'dist/js/<%= pkg.name %>.js'
+        options:
+          bare: true, join: true
+        files:
+          'dist/js/<%= pkg.name %>.js': [
+            'src/app.coffee',
+            'src/controller.coffee',
+            'src/model.coffee',
+            'src/view.coffee',
+            'src/default.coffee',
+            'src/api.coffee'
+          ]
       specs:
         files:[
           {
