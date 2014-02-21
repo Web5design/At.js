@@ -78,6 +78,9 @@ module.exports = (grunt) ->
         options:
           message: 'Build Successfully'
 
+    copy:
+      css: {src: 'src/jquery.atwho.css', dest: 'dist/css/jquery.atwho.css'}
+
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
@@ -86,10 +89,11 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-json-replace'
   grunt.loadNpmTasks 'grunt-notify'
+  grunt.loadNpmTasks 'grunt-contrib-copy'
 
   # alias
   grunt.registerTask 'update-version', 'json-replace'
 
   grunt.registerTask "server", ["coffee", "jasmine:dist:build", "connect"]
   grunt.registerTask "test", ["coffee", "jasmine"]
-  grunt.registerTask "default", ['test', 'uglify', 'update-version']
+  grunt.registerTask "default", ['test', 'uglify', 'copy', 'update-version']
