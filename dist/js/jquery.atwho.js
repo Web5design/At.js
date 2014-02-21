@@ -4,6 +4,15 @@
 * Licensed MIT
 */
 
+(function() {
+  (function(factory) {
+    if (typeof define === 'function' && define.amd) {
+      return define(['jquery'], factory);
+    } else {
+      return factory(window.jQuery);
+    }
+  })(function($) {
+
 var $CONTAINER, Api, App, Atwho, Controller, DEFAULT_CALLBACKS, KEY_CODE, Model, View,
   __slice = [].slice;
 
@@ -705,3 +714,6 @@ $.fn.atwho["default"] = {
   max_len: 20,
   display_timeout: 300
 };
+
+  });
+}).call(this);

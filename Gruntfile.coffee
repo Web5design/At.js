@@ -34,6 +34,16 @@ module.exports = (grunt) ->
           src: 'spec/spec_helper.coffee', dest: 'spec/build/spec_helper.js'
         ]
 
+    copy:
+      css: {src: 'src/jquery.atwho.css', dest: 'dist/css/jquery.atwho.css'}
+
+    concat:
+      options:
+        banner: "<%= meta.banner %>"
+      dist:
+        src: ['src/wrapper_header.js', 'src/build/<%= pkg.name %>.js', 'src/wrapper_footer.js'],
+        dest: 'dist/js/<%= pkg.name %>.js'
+
     uglify:
       dist:
         src: 'dist/js/<%= pkg.name %>.js', dest: 'dist/js/<%= pkg.name %>.min.js'
@@ -41,7 +51,7 @@ module.exports = (grunt) ->
     watch:
       coffee:
         files: ['src/*.coffee', 'spec/javascripts/*.spec.coffee', 'spec/spec_helper.coffee']
-        tasks: ['coffee', 'uglify', 'notify']
+        tasks: ['compile', 'notify']
       test:
         options:
           debounceDelay: 250
@@ -89,18 +99,6 @@ module.exports = (grunt) ->
         options:
           message: 'Build Successfully'
 
-    copy:
-      css: {src: 'src/jquery.atwho.css', dest: 'dist/css/jquery.atwho.css'}
-
-    concat:
-      options:
-        # banner: "<%= meta.banner %>"
-        process: (src) ->
-          grunt.template.process("<%= meta.banner %>") + src
-      dist:
-        src: 'src/build/<%= pkg.name %>.js',
-        dest: 'dist/js/<%= pkg.name %>.js'
-
 
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
@@ -114,7 +112,8 @@ module.exports = (grunt) ->
 
   # alias
   grunt.registerTask 'update-version', 'json-replace'
+  grunt.registerTask 'compile', ['coffee', 'concat', 'copy']
 
-  grunt.registerTask "server", ["coffee", "jasmine:dist:build", "connect"]
-  grunt.registerTask "test", ["coffee", "jasmine"]
-  grunt.registerTask "default", ['test', 'uglify', 'copy', 'update-version']
+  grunt.registerTask "server", ["compile", "jasmine:dist:build", "connect"]
+  grunt.registerTask "test", ["compile", "jasmine"]
+  grunt.registerTask "default", ['compile', 'uglify', 'update-version']
